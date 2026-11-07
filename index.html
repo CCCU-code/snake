@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="一个简洁、流畅的键盘贪吃蛇游戏。"
+    />
+    <title>Snake - 贪吃蛇</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="game-panel" aria-labelledby="game-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">CLASSIC ARCADE</p>
+            <h1 id="game-title">Snake<span>.</span></h1>
+          </div>
+
+          <div class="scoreboard" aria-label="游戏分数">
+            <div class="score-item">
+              <span>得分</span>
+              <strong id="score">0</strong>
+            </div>
+            <div class="score-divider" aria-hidden="true"></div>
+            <div class="score-item">
+              <span>最高分</span>
+              <strong id="highScore">0</strong>
+            </div>
+          </div>
+        </header>
+
+        <div class="board-wrap">
+          <canvas
+            id="gameCanvas"
+            width="560"
+            height="560"
+            role="img"
+            aria-label="贪吃蛇游戏棋盘"
+          ></canvas>
+
+          <div id="gameOverlay" class="game-overlay is-hidden">
+            <div class="overlay-card">
+              <p id="overlayLabel" class="overlay-label">GAME OVER</p>
+              <h2 id="overlayTitle">撞到了</h2>
+              <p id="overlayText">本局得分 0</p>
+              <button id="overlayButton" class="button button-primary" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 11a8 8 0 1 0-2.34 5.66" />
+                  <path d="M20 4v7h-7" />
+                </svg>
+                再玩一次
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <footer class="controls">
+          <div id="statusText" class="status" aria-live="polite">
+            <span class="status-dot"></span>
+            <span id="statusLabel">准备开始</span>
+          </div>
+
+          <div class="button-row">
+            <button id="startButton" class="button button-primary" type="button">
+              <svg class="button-icon play-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m8 5 11 7-11 7V5Z" />
+              </svg>
+              <svg class="button-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 5v14M15 5v14" />
+              </svg>
+              <span id="startButtonLabel">开始游戏</span>
+            </button>
+            <button id="restartButton" class="button button-secondary" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 11a8 8 0 1 0-2.34 5.66" />
+                <path d="M20 4v7h-7" />
+              </svg>
+              重新开始
+            </button>
+          </div>
+        </footer>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
