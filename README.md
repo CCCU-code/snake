@@ -2,6 +2,8 @@
 
 一个使用原生 HTML、CSS 和 JavaScript 实现的经典贪吃蛇小游戏。
 
+在线演示：<https://cccu-code.github.io/snake/>
+
 ## 功能
 
 - 键盘方向键 / WASD 控制
@@ -23,7 +25,7 @@ python -m http.server 8000
 
 ## GitHub Pages
 
-项目已配置 GitHub Actions 自动部署。推送到 `main` 分支后，在仓库的 **Settings → Pages** 中将 Source 设为 **GitHub Actions**，即可自动发布。
+项目已通过 GitHub Actions 自动部署到 GitHub Pages。每次推送到 `main` 分支都会自动发布：<https://cccu-code.github.io/snake/>。
 
 ## 项目结构
 
