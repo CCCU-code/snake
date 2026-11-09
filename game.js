@@ -12,6 +12,8 @@ const overlayButton = document.querySelector("#overlayButton");
 const overlayLabel = document.querySelector("#overlayLabel");
 const overlayTitle = document.querySelector("#overlayTitle");
 const overlayText = document.querySelector("#overlayText");
+const boardWrap = document.querySelector(".board-wrap");
+const touchButtons = document.querySelectorAll("[data-direction]");
 
 const GRID_SIZE = 20;
 const BOARD_SIZE = 560;
@@ -24,6 +26,13 @@ const DIRECTIONS = {
   down: { x: 0, y: 1 },
   left: { x: -1, y: 0 },
   right: { x: 1, y: 0 },
+};
+
+const TOUCH_DIRECTIONS = {
+  up: DIRECTIONS.up,
+  down: DIRECTIONS.down,
+  left: DIRECTIONS.left,
+  right: DIRECTIONS.right,
 };
 
 let snake = [];
@@ -189,6 +198,21 @@ function queueDirection(nextDirection) {
   if (status === "ready") {
     startGame();
   }
+}
+
+function queueSwipeDirection(deltaX, deltaY) {
+  const distance = Math.max(Math.abs(deltaX), Math.abs(deltaY));
+
+  if (distance < 24) {
+    return;
+  }
+
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    queueDirection(deltaX > 0 ? DIRECTIONS.right : DIRECTIONS.left);
+    return;
+  }
+
+  queueDirection(deltaY > 0 ? DIRECTIONS.down : DIRECTIONS.up);
 }
 
 function moveSnake() {
@@ -469,6 +493,62 @@ window.addEventListener("keydown", (event) => {
     event.preventDefault();
     toggleGame();
   }
+});
+
+touchButtons.forEach((button) => {
+  const nextDirection = TOUCH_DIRECTIONS[button.dataset.direction];
+
+  if (!nextDirection) {
+    return;
+  }
+
+  button.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    queueDirection(nextDirection);
+  });
+
+  button.addEventListener("click", (event) => {
+    if (event.detail === 0) {
+      queueDirection(nextDirection);
+    }
+  });
+});
+
+let swipeStart = null;
+
+boardWrap.addEventListener("pointerdown", (event) => {
+  swipeStart = {
+    pointerId: event.pointerId,
+    x: event.clientX,
+    y: event.clientY,
+  };
+  try {
+    boardWrap.setPointerCapture(event.pointerId);
+  } catch {
+    // Pointer capture is an optimization; swipe tracking still works without it.
+  }
+});
+
+boardWrap.addEventListener("pointermove", (event) => {
+  if (!swipeStart || event.pointerId !== swipeStart.pointerId) {
+    return;
+  }
+
+  const deltaX = event.clientX - swipeStart.x;
+  const deltaY = event.clientY - swipeStart.y;
+
+  if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 24) {
+    queueSwipeDirection(deltaX, deltaY);
+    swipeStart = null;
+  }
+});
+
+boardWrap.addEventListener("pointerup", () => {
+  swipeStart = null;
+});
+
+boardWrap.addEventListener("pointercancel", () => {
+  swipeStart = null;
 });
 
 startButton.addEventListener("click", toggleGame);
